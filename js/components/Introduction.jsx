@@ -16,8 +16,15 @@ class Introduction extends React.Component {
   render() {
     return (
       <div className="schemaform-intro">
-        <FormTitle title="Create test form with U.S. Forms System"/>
-        <p>Scaffolding to get any form started!</p>
+        <FormTitle title="Request for Transcript of Tax Return"/>
+        <p>
+          Use Form 4506-T to order a transcript or other return information free
+          of charge. See the product list below. You can quickly request transcripts by
+          using our automated self-help service tools. Please visit us at IRS.gov and
+          click on “Get a Tax Transcript...” under “Tools” or call 1-800-908-9946. If you 
+          need a copy of your return, use <strong>Form 4506, Request for Copy of Tax Return</strong>.
+          There is a fee to get a copy of your return.
+        </p>
         <ProgressButton
           onButtonClick={this.startForm}
           buttonText="Start Form"
