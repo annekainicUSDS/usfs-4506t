@@ -91,12 +91,30 @@ const formConfig = {
           path: 'personal-information/previous-address',
           title: 'Previous Address',
           uiSchema: {
-
+            sameAddress: {
+              'ui:title': 'Is your current address the same as the address on your last tax return?',
+              'ui:widget': 'yesNo'
+            },
+            'view:previousAddressInformation': {
+              'ui:options': {
+                expandUnder: 'sameAddress',
+                expandUnderCondition: false
+              },
+              previousAddress: addressUI('Previous address', false, (formData) => formData.sameAddress === false)
+            }
           },
           schema: {
             type: 'object',
             properties: {
-              
+              sameAddress: {
+                type: 'boolean'
+              },
+              'view:previousAddressInformation': {
+                type: 'object',
+                properties: {
+                  previousAddress: addressSchema(address, true)
+                }
+              }
             }
           }
         }
