@@ -1,10 +1,13 @@
 import Introduction from '../components/Introduction.jsx';
 import fullName from '../definitions/fullName';
 import { address } from '../definitions/address';
+import { dateSchema } from '../definitions/date';
 
 import fullNameUI from 'us-forms-system/lib/js/definitions/fullName';
 import ssn from 'us-forms-system/lib/js/definitions/ssn';
 import { schema as addressSchema, uiSchema as addressUI } from 'us-forms-system/lib/js/definitions/address';
+import phoneUI from 'us-forms-system/lib/js/definitions/phone';
+import dateUI from 'us-forms-system/lib/js/definitions/date';
 
 const formConfig = {
   title: 'Request for Transcript of Tax Return',
@@ -123,7 +126,116 @@ const formConfig = {
     secondSection: {
       title: 'Third Party Information',
       pages: {
-
+        sendingInformation: {
+          path: 'third-party-information/sending-information',
+          title: 'Are you sending information to a third party?',
+          uiSchema: {
+            sendingToThirdParty: {
+              'ui:title': 'Is the transcript or tax information being sent to a third party?',
+              'ui:description': 'Sometimes you may need to send your tax information to a third party, such as a mortgage company.',
+              'ui:widget': 'yesNo'
+            },
+            'view:infoForThirdParty': {
+              'ui:options': {
+                expandUnder: 'sendingToThirdParty'
+              },
+              thirdPartyName: {
+                'ui:title': 'Name of third party'
+              },
+              thirdPartyAddress: addressUI('Third party address', false, (formData) => formData.sendingToThirdParty === true),
+              thirdPartyPhone: phoneUI('Third party phone number')
+            }
+          },
+          schema: {
+            type: 'object',
+            properties: {
+              sendingToThirdParty: {
+                type: 'boolean'
+              },
+              'view:infoForThirdParty': {
+                type: 'object',
+                properties: {
+                  thirdPartyName: {
+                    type: 'string'
+                  },
+                  thirdPartyAddress: addressSchema(address, true),
+                  thirdPartyPhone: {
+                    type: 'string',
+                    minLength: 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        transcriptInformation: {
+          path: 'third-party-information/transcript-information',
+          title: 'Transcript information',
+          uiSchema: {
+            'ui:description': 'Once the IRS discloses your tax transcript to the third party, the IRS has no control over what the third party does with the information. If you would like to limit the third party’s authority to disclose your transcript information, you can specify this limitation in your written agreement with the third party.',
+            taxFormNumber: {
+              'ui:title': 'Enter the tax form number of the transcript you are requesting'
+            },
+            transcriptType: {
+              'ui:title': 'Select the type of transcript you are requesting',
+              'ui:widget': 'radio',
+              'ui:options': {
+                labels: {
+                  returnTranscript: 'Return Transcript',
+                  accountTranscript: 'Account Transcript',
+                  recordOfAccount: 'Record of Account',
+                  verificationOfNonfilling: 'Verification of Nonfilling',
+                  otherFormSeriesTranscript: 'Form W-2, Form 1099 series, Form 1098 series, or Form 5498 series transcript'
+                }
+              }
+            },
+            requestingQuarterlyReturns: {
+              'ui:title': 'Are you requesting a transcript related to quarterly tax returns (such as Form 941)?',
+              'ui:widget': 'yesNo'
+            },
+            dateOfReturn: Object.assign({}, dateUI('End date of return'), {
+              'ui:options': {
+                expandUnder: 'requestingQuarterlyReturns',
+                expandUnderCondition: false
+              }
+            }),
+            quarterlyDatesOfReturn: {
+              'ui:title': 'End dates of each quarter of the period of return',
+              'ui:options': {
+                expandUnder: 'requestingQuarterlyReturns'
+              },
+              firstQuarterDateOfReturn: Object.assign({}, dateUI('First quarter date of return')),
+              secondQuarterDateOfReturn: Object.assign({}, dateUI('Second quarter date of return')),
+              thirdQuarterDateOfReturn: Object.assign({}, dateUI('Third quarter date of return')),
+              fourthQuarterDateOfReturn: Object.assign({}, dateUI('Fourth quarter date of return'))
+            }
+          },
+          schema: {
+            type: 'object',
+            properties: {
+              taxFormNumber: {
+                type: 'string'
+              },
+              transcriptType: {
+                type: 'string',
+                enum: ['returnTranscript', 'accountTranscript', 'recordOfAccount', 'verificationOfNonfilling', 'otherFormSeriesTranscript']
+              },
+              requestingQuarterlyReturns: {
+                type: 'boolean'
+              },
+              dateOfReturn: dateSchema,
+              quarterlyDatesOfReturn: {
+                type: 'object',
+                properties: {
+                  firstQuarterDateOfReturn: dateSchema,
+                  secondQuarterDateOfReturn: dateSchema,
+                  thirdQuarterDateOfReturn: dateSchema,
+                  fourthQuarterDateOfReturn: dateSchema
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
