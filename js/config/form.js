@@ -3,6 +3,7 @@ import fullName from '../definitions/fullName';
 import { address } from '../definitions/address';
 import { dateSchema } from '../definitions/date';
 import { ssnSchema } from '../definitions/ssn';
+import { phoneSchema } from '../definitions/phone';
 
 import fullNameUI from 'us-forms-system/lib/js/definitions/fullName';
 import ssn from 'us-forms-system/lib/js/definitions/ssn';
@@ -66,6 +67,7 @@ const formConfig = {
           },
           schema: {
             type: 'object',
+            required: ['secondFullName', 'secondSSN'],
             properties: {
               secondFullName: fullName,
               secondSSN: ssnSchema
@@ -154,10 +156,7 @@ const formConfig = {
                     type: 'string'
                   },
                   thirdPartyAddress: addressSchema(address, true),
-                  thirdPartyPhone: {
-                    type: 'string',
-                    minLength: 10
-                  }
+                  thirdPartyPhone: phoneSchema
                 }
               }
             }
