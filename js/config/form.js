@@ -2,6 +2,7 @@ import Introduction from '../components/Introduction.jsx';
 import fullName from '../definitions/fullName';
 import { address } from '../definitions/address';
 import { dateSchema } from '../definitions/date';
+import { ssnSchema } from '../definitions/ssn';
 
 import fullNameUI from 'us-forms-system/lib/js/definitions/fullName';
 import ssn from 'us-forms-system/lib/js/definitions/ssn';
@@ -44,10 +45,7 @@ const formConfig = {
             required: ['firstFullName', 'firstSSN'],
             properties: {
               firstFullName: fullName,
-              firstSSN: {
-                type: 'string',
-                pattern: '^[0-9]{9}$'
-              },
+              firstSSN: ssnSchema,
               'view:isJointReturn': {
                 type: 'boolean'
               }
@@ -70,10 +68,7 @@ const formConfig = {
             type: 'object',
             properties: {
               secondFullName: fullName,
-              secondSSN: {
-                type: 'string',
-                pattern: '^[0-9]{9}$'
-              }
+              secondSSN: ssnSchema
             }
           }
         },
