@@ -165,6 +165,7 @@ const formConfig = {
         transcriptInformation: {
           path: 'third-party-information/transcript-information',
           title: 'Transcript information',
+          depends: (formData) => formData['sendingToThirdParty'],
           uiSchema: {
             'ui:description': 'Once the IRS discloses your tax transcript to the third party, the IRS has no control over what the third party does with the information. If you would like to limit the third party’s authority to disclose your transcript information, you can specify this limitation in your written agreement with the third party.',
             taxFormNumber: {
